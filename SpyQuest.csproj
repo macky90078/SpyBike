@@ -90,7 +90,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Mack&apos;s\CGController.cs" />
+    <Compile Include="Assets\Scripts\Mack&apos;s\LockedDoor.cs" />
     <Compile Include="Assets\Scripts\Mack&apos;s\SpyController.cs" />
+    <Compile Include="Assets\Scripts\Mack&apos;s\SpyMovement.cs" />
     <Compile Include="Assets\Scripts\Rob&apos;s\SmoothMovement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
