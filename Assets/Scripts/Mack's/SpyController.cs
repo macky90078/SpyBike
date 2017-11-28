@@ -11,8 +11,8 @@ public class SpyController : MonoBehaviour {
     private bool CR_running = false;
     private bool m_isAxisInUse = false;
     private bool m_isInput = true;
-    public bool m_overLockedDoor = false;
-    public bool m_overGround = false;
+    private bool m_overLockedDoor = false;
+    public bool m_overWall = false;
 
     [HideInInspector] public bool m_setActive = false;
 
@@ -28,10 +28,14 @@ public class SpyController : MonoBehaviour {
     [SerializeField] private GameObject m_CGControllerObj;
     private CGController m_CGController;
 
+    [SerializeField] private GameObject m_spyCamObj;
+    private CameraControl m_camController;
+
     private void Awake()
     {
         m_spyMovement = m_spyObj.GetComponent<SpyMovement>();
         m_CGController = m_CGControllerObj.GetComponent<CGController>();
+        m_camController = m_spyCamObj.GetComponent<CameraControl>();
     }
 
     void Update()
@@ -54,15 +58,24 @@ public class SpyController : MonoBehaviour {
             m_isInput = false;
             m_activeCount = -1;
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            m_camController.ShowCGCam();
             m_CGController.m_setActive = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Wall")
+        {
+            m_overWall = true;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Ground")
+        if(collision.tag == "Wall")
         {
-            m_overGround = true;
+            m_overWall = true;
         }
         else if (collision.tag == "LockedDoor")
         {
@@ -72,9 +85,9 @@ public class SpyController : MonoBehaviour {
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Ground")
+        if (collision.tag == "Wall")
         {
-            m_overGround = false;
+            m_overWall = false;
         }
         else if (collision.tag == "LockedDoor")
         {
@@ -85,7 +98,7 @@ public class SpyController : MonoBehaviour {
     private void GetInput()
     {
 
-        if(Input.GetButtonDown("J1AButton") && m_targetDist < 0.97f && m_overGround && !m_spyMovement.CR_running)
+        if(Input.GetButtonDown("J1AButton") && m_targetDist < 0.97f && !m_overWall && !m_overLockedDoor && !m_spyMovement.CR_running)
         {
             StartCoroutine(m_spyMovement.SmoothMove(transform.position, m_timeDelta));
         }

@@ -12,20 +12,26 @@ public class CGController : MonoBehaviour {
 
     private bool CR_running = false;
     private bool m_isAxisInUse = false;
-    private bool m_pressedSelect = false;
     private bool m_isInput = false;
+    public bool m_overLockedDoor = false;
 
     [HideInInspector] public bool m_setActive = false;
 
     private Vector3 m_priorLocation;
 
+    public GameObject m_selectedObj = null;
+
     [SerializeField] private GameObject m_spyControllerObj;
     private SpyController m_spycontroller;
+
+    [SerializeField] private GameObject m_CGCamObj;
+    private CameraControl m_camController;
 
     private void Awake()
     {
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         m_spycontroller = m_spyControllerObj.GetComponent<SpyController>();
+        m_camController = m_CGCamObj.GetComponent<CameraControl>();
     }
 
     // Update is called once per frame
@@ -48,37 +54,39 @@ public class CGController : MonoBehaviour {
             m_isInput = false;
             m_activeCount = -1;
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            m_camController.ShowSpyCam();
             m_spycontroller.m_setActive = true;
         }
 
 	}
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (m_pressedSelect && collision.tag == "LockedDoor")
-        {
-            collision.GetComponent<LockedDoor>().m_CGHacked = true;
-            m_activeCount += 1;
-            m_pressedSelect = false;
-        }
         if (collision.tag == "LockedDoor")
         {
-            Debug.Log("On Locked Door!");
+            m_selectedObj = collision.gameObject;
+            m_overLockedDoor = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "LockedDoor")
+        {
+            m_overLockedDoor = false;
         }
     }
 
     private void GetInput()
     {
-
-        //if (Input.GetButtonDown("J1AButton") && m_targetDist < 0.97f && m_overGround && !m_spyMovement.CR_running)
-        //{
-        //    StartCoroutine(m_spyMovement.SmoothMove(transform.position, m_timeDelta));
-        //}
-        //else if (Input.GetButtonDown("J1AButton") && m_targetDist < 0.97f && m_overLockedDoor && !m_spyMovement.CR_running)
-        //{
-        //    m_selectedObj.GetComponent<LockedDoor>().m_spyHacked = true;
-        //    m_activeCount += 1;
-        //}
+        if (Input.GetButtonDown("J2AButton") && m_overLockedDoor && !CR_running)
+        {
+            m_selectedObj.GetComponent<LockedDoor>().m_CGHacked = true;
+            m_activeCount += 1;
+        }
+        else if(Input.GetButtonDown("J2AButton") && !CR_running)
+        {
+            m_activeCount += 1;
+        }
 
         if (Input.GetAxisRaw("J2LeftVertical") < 0f && !CR_running)
         {

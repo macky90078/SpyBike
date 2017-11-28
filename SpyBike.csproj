@@ -84,6 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Mack&apos;s\CameraControl.cs" />
     <Compile Include="Assets\Scripts\Mack&apos;s\CGController.cs" />
     <Compile Include="Assets\Scripts\Mack&apos;s\GuardAI.cs" />
     <Compile Include="Assets\Scripts\Mack&apos;s\LockedDoor.cs" />

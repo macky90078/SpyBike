@@ -10,6 +10,7 @@ TagManager:
   - node2
   - node3
   - node4
+  - Wall
   layers:
   - Default
   - TransparentFX
