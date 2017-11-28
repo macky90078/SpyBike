@@ -70,20 +70,20 @@ public class CGController : MonoBehaviour {
     private void GetInput()
     {
 
-        //if (Input.GetButtonDown("J1AButton") && m_targetDist < 0.97f && !CR_running)
+        //if (Input.GetButtonDown("J1AButton") && m_targetDist < 0.97f && m_overGround && !m_spyMovement.CR_running)
         //{
-            
+        //    StartCoroutine(m_spyMovement.SmoothMove(transform.position, m_timeDelta));
         //}
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            m_pressedSelect = true;
-        }
+        //else if (Input.GetButtonDown("J1AButton") && m_targetDist < 0.97f && m_overLockedDoor && !m_spyMovement.CR_running)
+        //{
+        //    m_selectedObj.GetComponent<LockedDoor>().m_spyHacked = true;
+        //    m_activeCount += 1;
+        //}
 
-
-        if (Input.GetKey(KeyCode.UpArrow) && !CR_running)
+        if (Input.GetAxisRaw("J2LeftVertical") < 0f && !CR_running)
         {
-            //if (m_isAxisInUse == false)
-            //{
+            if (m_isAxisInUse == false)
+            {
                 m_priorLocation = transform.position;
 
                 Vector3 relativeLocation = new Vector3(0f, m_moveDist, 0f);
@@ -92,15 +92,15 @@ public class CGController : MonoBehaviour {
 
                 StartCoroutine(SmoothMove(targetLocation, timeDelta));
 
-               // RayCastCheck(transform.up);
-            //    m_isAxisInUse = true;
-            //}
+                //RayCastCheck(transform.up);
+                m_isAxisInUse = true;
+            }
 
         }
-        else if (Input.GetKey(KeyCode.DownArrow) && !CR_running)
+        else if (Input.GetAxisRaw("J2LeftVertical") > 0f && !CR_running)
         {
-            //if (m_isAxisInUse == false)
-            //{
+            if (m_isAxisInUse == false)
+            {
                 m_priorLocation = transform.position;
 
                 Vector3 relativeLocation = new Vector3(0f, m_moveDist, 0f);
@@ -109,15 +109,15 @@ public class CGController : MonoBehaviour {
 
                 StartCoroutine(SmoothMove(targetLocation, timeDelta));
 
-               // RayCastCheck(-transform.up);
-            //    m_isAxisInUse = true;
-            //}
+                //RayCastCheck(-transform.up);
+                m_isAxisInUse = true;
+            }
 
         }
-        else if (Input.GetKey("right") && !CR_running)
+        else if (Input.GetAxisRaw("J2LeftHorizontal") > 0f && !CR_running)
         {
-            //if (m_isAxisInUse == false)
-            //{
+            if (m_isAxisInUse == false)
+            {
                 m_priorLocation = transform.position;
 
                 Vector3 relativeLocation = new Vector3(m_moveDist, 0f, 0f);
@@ -126,15 +126,15 @@ public class CGController : MonoBehaviour {
 
                 StartCoroutine(SmoothMove(targetLocation, timeDelta));
 
-               // RayCastCheck(transform.right);
-            //    m_isAxisInUse = true;
-            //}
+                //RayCastCheck(transform.right);
+                m_isAxisInUse = true;
+            }
 
         }
-        else if (Input.GetKey(KeyCode.LeftArrow) && !CR_running)
+        else if (Input.GetAxisRaw("J2LeftHorizontal") < 0f && !CR_running)
         {
-            //if (m_isAxisInUse == false)
-            //{
+            if (m_isAxisInUse == false)
+            {
                 m_priorLocation = transform.position;
 
                 Vector3 relativeLocation = new Vector3(m_moveDist, 0f, 0f);
@@ -143,18 +143,17 @@ public class CGController : MonoBehaviour {
 
                 StartCoroutine(SmoothMove(targetLocation, timeDelta));
 
-              //  RayCastCheck(-transform.right);
-            //    m_isAxisInUse = true;
-            //}
+                //RayCastCheck(-transform.right);
+                m_isAxisInUse = true;
+            }
 
         }
 
-        //if (Input.GetAxisRaw("J1LeftVertical") == 0f && Input.GetAxisRaw("J1LeftHorizontal") == 0f)
-        //{
-        //    m_isAxisInUse = false;
-        //}
+        if (Input.GetAxisRaw("J2LeftVertical") == 0f && Input.GetAxisRaw("J2LeftHorizontal") == 0f)
+        {
+            m_isAxisInUse = false;
+        }
     }
-
 
     public IEnumerator SmoothMove(Vector3 target, float delta)
     {

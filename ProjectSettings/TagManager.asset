@@ -6,6 +6,10 @@ TagManager:
   tags:
   - LockedDoor
   - Ground
+  - node1
+  - node2
+  - node3
+  - node4
   layers:
   - Default
   - TransparentFX
