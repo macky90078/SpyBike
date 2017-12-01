@@ -11,6 +11,10 @@ TagManager:
   - node3
   - node4
   - Wall
+  - Target
+  - Target2
+  - Target3
+  - Target4
   layers:
   - Default
   - TransparentFX
